@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tworzę Nowoczesne Strony Internetowe</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #000;
+            color: #fff;
+            overflow-x: hidden;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .star {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            animation: twinkle 3s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 1; }
+        }
+
+        .particle {
+            position: absolute;
+            background: radial-gradient(circle, rgba(0,212,255,0.8) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            25% { transform: translateY(-100px) translateX(50px); }
+            50% { transform: translateY(-50px) translateX(-50px); }
+            75% { transform: translateY(-150px) translateX(30px); }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 25px 0;
+            z-index: 1000;
+            border-bottom: 2px solid transparent;
+            border-image: linear-gradient(90deg, #00d4ff, #ff00ea, #ffaa00);
+            border-image-slice: 1;
+            box-shadow: 0 5px 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 50px;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1em;
+            transition: all 0.4s;
+            position: relative;
+            padding: 10px 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.8);
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #ff00ea);
+            transition: all 0.4s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::before {
+            width: 100%;
+        }
+
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .menu-toggle span {
+            width: 30px;
+            height: 3px;
+            background: linear-gradient(90deg, #00d4ff, #ff00ea);
+            transition: all 0.3s;
+            border-radius: 3px;
+        }
+
+        .page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            position: absolute;
+            width: 100%;
+            pointer-events: none;
+        }
+
+        .page.active {
+            opacity: 1;
+            transform: scale(1);
+            position: relative;
+            pointer-events: all;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 120px 20px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        #start-page {
+            background: radial-gradient(circle at center, rgba(48, 43, 99, 0.4), transparent);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 100px 20px;
+        }
+
+        h1 {
+            font-size: 5em;
+            margin-bottom: 30px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ea, #ffaa00, #00d4ff);
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 5s ease infinite;
+            text-shadow: 0 0 100px rgba(0, 212, 255, 0.5);
+            font-weight: 900;
+            letter-spacing: 2px;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        .subtitle {
+            font-size: 2em;
+            color: #ffaa00;
+            margin-bottom: 40px;
+            text-shadow: 0 0 30px rgba(255, 170, 0, 0.5);
+            font-weight: 600;
+        }
+
+        .tech-badges {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+
+        .badge {
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 3px solid #00d4ff;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.3em;
+            transition: all 0.4s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .badge::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.3), transparent);
+            transition: all 0.6s;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+        }
+
+        .badge:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .badge:hover {
+            transform: translateY(-10px) scale(1.1);
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.6);
+            border-color: #ff00ea;
+        }
+
+        .content-section {
+            background: rgba(0, 0, 0, 0.6);
+            padding: 60px;
+            border-radius: 30px;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), inset 0 0 50px rgba(0, 212, 255, 0.05);
+            margin: 40px auto;
+            max-width: 1000px;
+        }
+
+        h2 {
+            font-size: 3.5em;
+            margin-bottom: 40px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ea);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            font-weight: 800;
+        }
+
+        .about-text {
+            font-size: 1.3em;
+            line-height: 2;
+            text-align: center;
+            color: #e0e0e0;
+            margin-bottom: 30px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+
+        .feature {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 0, 234, 0.1));
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+            transition: all 0.4s;
+        }
+
+        .feature::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 20px;
+            padding: 2px;
+            background: linear-gradient(135deg, #00d4ff, #ff00ea);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature:hover::before {
+            opacity: 1;
+        }
+
+        .feature:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 0 20px 50px rgba(0, 212, 255, 0.4);
+        }
+
+        .feature h3 {
+            color: #ffaa00;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+            text-shadow: 0 0 20px rgba(255, 170, 0, 0.5);
+        }
+
+        .feature p {
+            color: #e0e0e0;
+            line-height: 1.8;
+            font-size: 1.1em;
+        }
+
+        .pros-cons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-top: 40px;
+        }
+
+        .pros, .cons {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 35px;
+            border-radius: 20px;
+            border: 2px solid;
+        }
+
+        .pros {
+            border-color: #00ff88;
+            box-shadow: 0 10px 30px rgba(0, 255, 136, 0.2);
+        }
+
+        .cons {
+            border-color: #ff4444;
+            box-shadow: 0 10px 30px rgba(255, 68, 68, 0.2);
+        }
+
+        .pros h3 {
+            color: #00ff88;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-shadow: 0 0 20px rgba(0, 255, 136, 0.5);
+        }
+
+        .cons h3 {
+            color: #ff4444;
+            margin-bottom: 25px;
+            font-size: 2em;
+            text-shadow: 0 0 20px rgba(255, 68, 68, 0.5);
+        }
+
+        .pros-cons ul {
+            list-style: none;
+        }
+
+        .pros-cons li {
+            padding: 15px 0;
+            padding-left: 40px;
+            position: relative;
+            font-size: 1.1em;
+            line-height: 1.6;
+        }
+
+        .pros li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #00ff88;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .cons li:before {
+            content: "✗";
+            position: absolute;
+            left: 0;
+            color: #ff4444;
+            font-weight: bold;
+            font-size: 1.5em;
+        }
+
+        .pricing-box {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.15), rgba(255, 0, 234, 0.15));
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            border: 3px solid rgba(255, 170, 0, 0.5);
+            margin-top: 40px;
+            box-shadow: 0 20px 60px rgba(255, 170, 0, 0.3);
+        }
+
+        .price-range {
+            font-size: 4em;
+            background: linear-gradient(45deg, #00ff88, #00d4ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin: 30px 0;
+            font-weight: 900;
+            text-shadow: 0 0 50px rgba(0, 255, 136, 0.5);
+        }
+
+        .pricing-text {
+            font-size: 1.3em;
+            line-height: 1.8;
+            color: #e0e0e0;
+            margin-top: 20px;
+        }
+
+        .payment-badge {
+            background: rgba(255, 170, 0, 0.2);
+            padding: 25px 40px;
+            border-radius: 20px;
+            margin-top: 40px;
+            border: 2px solid #ffaa00;
+            font-size: 1.2em;
+        }
+
+        .payment-badge h3 {
+            color: #ffaa00;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 25px 60px;
+            background: linear-gradient(45deg, #00d4ff, #ff00ea);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 1.5em;
+            font-weight: bold;
+            margin-top: 50px;
+            transition: all 0.4s;
+            box-shadow: 0 10px 40px rgba(0, 212, 255, 0.4);
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .cta-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .cta-button:hover::before {
+            width: 400px;
+            height: 400px;
+        }
+
+        .cta-button:hover {
+            transform: scale(1.1) translateY(-5px);
+            box-shadow: 0 20px 60px rgba(0, 212, 255, 0.7);
+        }
+
+        .contact-box {
+            background: rgba(255, 170, 0, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            border: 2px solid rgba(255, 170, 0, 0.5);
+            margin-top: 30px;
+        }
+
+        .email {
+            font-size: 1.5em;
+            color: #00d4ff;
+            margin: 20px 0;
+            font-weight: 600;
+        }
+
+        .testimonial {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 30px;
+            border-radius: 20px;
+            border-left: 5px solid #00d4ff;
+            margin: 20px 0;
+            font-style: italic;
+            font-size: 1.1em;
+            line-height: 1.8;
+        }
+
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: flex;
+                position: fixed;
+                top: 30px;
+                right: 20px;
+                z-index: 1001;
+            }
+
+            .nav-container {
+                justify-content: center;
+            }
+
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                background: rgba(0, 0, 0, 0.98);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 30px;
+                transform: translateX(100%);
+                transition: transform 0.4s;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+            }
+
+            h1 {
+                font-size: 3em;
+            }
+
+            .pros-cons {
+                grid-template-columns: 1fr;
+            }
+
+            .content-section {
+                padding: 30px;
+            }
+
+            .price-range {
+                font-size: 2.5em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="stars" id="stars"></div>
+    <div class="stars" id="particles"></div>
+    
+    <nav>
+        <div class="nav-container">
+            <div class="menu-toggle" onclick="toggleMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#" onclick="showPage('start'); return false;">Start</a></li>
+                <li><a href="#" onclick="showPage('omnie'); return false;">O mnie</a></li>
+                <li><a href="#" onclick="showPage('oferta'); return false;">Oferta</a></li>
+                <li><a href="#" onclick="showPage('plusy'); return false;">Plusy i Minusy</a></li>
+                <li><a href="#" onclick="showPage('cennik'); return false;">Cennik</a></li>
+                <li><a href="#" onclick="showPage('kontakt'); return false;">Kontakt</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div id="start-page" class="page active">
+        <div class="container">
+            <div class="hero">
+                <h1>Tworzę Nowoczesne Strony Internetowe</h1>
+                <p class="subtitle">Szybko, solidnie i bez zbędnych kosztów!</p>
+                <div class="tech-badges">
+                    <span class="badge">HTML5</span>
+                    <span class="badge">CSS3</span>
+                    <span class="badge">JavaScript</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="omnie-page" class="page">
+        <div class="container">
+            <div class="content-section">
+                <h2>O Mnie</h2>
+                <p class="about-text">Cześć! Mam 17 lat i tworzę profesjonalne strony internetowe. Zajmuję się programowaniem stron od kilku lat, specjalizując się w technologiach HTML, CSS i JavaScript.</p>
+                <p class="about-text">Moja pasja to przekształcanie pomysłów w piękne, funkcjonalne strony internetowe, które działają świetnie na wszystkich urządzeniach. Każdy projekt traktuję indywidualnie, dopasowując się do Twoich potrzeb i wizji.</p>
+                <p class="about-text">Dostajesz czysty, czytelny kod oraz gotowy projekt w pliku ZIP, który możesz łatwo wdrożyć. Stawiam na jakość, estetykę i funkcjonalność!</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="oferta-page" class="page">
+        <div class="container">
+            <div class="content-section">
+                <h2>Co Oferuję?</h2>
+                <div class="features-grid">
+                    <div class="feature">
+                        <h3>🎨 Indywidualne Dopasowanie</h3>
+                        <p>Każda strona jest projektowana od zera według Twoich wymagań i preferencji. Twoja wizja, moja realizacja!</p>
+                    </div>
+                    <div class="feature">
+                        <h3>💻 Czysty Kod</h3>
+                        <p>Profesjonalny, czytelny kod w HTML, CSS i JavaScript - łatwy do modyfikacji i rozbudowy w przyszłości.</p>
+                    </div>
+                    <div class="feature">
+                        <h3>📦 Gotowy Plik ZIP</h3>
+                        <p>Otrzymujesz kompletny projekt w archiwum ZIP, gotowy do wdrożenia. Wszystkie pliki w jednym miejscu!</p>
+                    </div>
+                    <div class="feature">
+                        <h3>📱 Responsywność</h3>
+                        <p>Strony działają perfekcyjnie na telefonach, tabletach i komputerach. Jeden projekt, wszystkie urządzenia!</p>
+                    </div>
+                    <div class="feature">
+                        <h3>⚡ Szybkie Ładowanie</h3>
+                        <p>Optymalizacja kodu dla maksymalnej wydajności strony. Twoi użytkownicy docenią szybkość!</p>
+                    </div>
+                    <div class="feature">
+                        <h3>🎯 Nowoczesny Design</h3>
+                        <p>Trendy design zgodny z najnowszymi standardami web designu. Wow efekt gwarantowany!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="plusy-page" class="page">
+        <div class="container">
+            <div class="content-section">
+                <h2>Plusy i Minusy</h2>
+                <div class="pros-cons">
+                    <div class="pros">
+                        <h3>Plusy ✓</h3>
+                        <ul>
+                            <li>Indywidualne dopasowanie do Twoich potrzeb</li>
+                            <li>Czysty i profesjonalny kod</li>
+                            <li>Gotowy plik ZIP z całym projektem</li>
+                            <li>Możliwość rozbudowy strony w przyszłości</li>
+                            <li>Atrakcyjna cena</li>
+                            <li>Responsywny design</li>
+                            <li>Szybki czas realizacji</li>
+                            <li>Nowoczesne efekty i animacje</li>
+                            <li>Pełne wsparcie w trakcie projektu</li>
+                        </ul>
+                    </div>
+                    <div class="cons">
+                        <h3>Minusy ✗</h3>
+                        <ul>
+                            <li>Hosting i domena to dodatkowy koszt po Twojej stronie</li>
+                            <li>Wdrożenie strony na serwer wymaga podstawowej wiedzy technicznej lub pomocy</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="cennik-page" class="page">
+        <div class="container">
+            <div class="content-section">
+                <h2>Cennik</h2>
+                <div class="pricing-box">
+                    <div class="price-range">300 - 1000 zł</div>
+                    <p class="pricing-text">Cena zależy od złożoności projektu, liczby podstron oraz zaawansowania funkcji, które chcesz mieć na swojej stronie.</p>
+                    <div class="payment-badge">
+                        <h3>💳 Płatność</h3>
+                        <p>Akceptuję płatność wyłącznie poprzez BLIK</p>
+                    </div>
+                </div>
+                <div class="testimonial">
+                    "Polecam każdemu, kto szuka profesjonalnej strony w świetnej cenie! Współpraca na najwyższym poziomie, a efekt przekroczył moje oczekiwania. Strona ładuje się błyskawicznie i wygląda rewelacyjnie!" 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="kontakt-page" class="page">
+        <div class="container">
+            <div class="content-section" style="text-align: center;">
+                <h2>Kontakt</h2>
+                <p class="about-text">Skontaktuj się ze mną, a stworzę stronę idealnie taką, jakiej potrzebujesz!</p>
+                <div class="contact-box">
+                    <h3 style="color: #ffaa00; font-size: 1.8em; margin-bottom: 20px;">📧 Email</h3>
+                    <p class="email">matixmati220@gmail.com</p>
+                </div>
+                <a href="mailto:matixmati220@gmail.com?subject=Zapytanie%20o%20stronę%20internetową&body=Cześć!%0D%0A%0D%0AChciałbym%20zapytać%20o%20stworzenie%20strony%20internetowej.%0D%0A%0D%0AMój%20projekt:%0D%0A" class="cta-button" style="display: inline-block; margin: 50px auto;">✉️ Napisz do mnie teraz!</a>
+                <p class="about-text" style="margin-top: 40px;">Odpowiadam szybko i chętnie pomogę w realizacji Twojego projektu. Razem stworzymy coś wyjątkowego!</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const starsContainer = document.getElementById('stars');
+        const particlesContainer = document.getElementById('particles');
+        
+        for (let i = 0; i < 150; i++) {
+            const star = document.createElement('div');
+            star.className = 'star';
+            star.style.width = Math.random() * 3 + 'px';
+            star.style.height = star.style.width;
+            star.style.left = Math.random() * 100 + '%';
+            star.style.top = Math.random() * 100 + '%';
+            star.style.animationDelay = Math.random() * 3 + 's';
+            starsContainer.appendChild(star);
+        }
+
+        for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            const size = Math.random() * 100 + 50;
+            particle.style.width = size + 'px';
+            particle.style.height = size + 'px';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.top = Math.random() * 100 + '%';
+            particle.style.animationDelay = Math.random() * 20 + 's';
+            particle.style.animationDuration = (Math.random() * 20 + 15) + 's';
+            particlesContainer.appendChild(particle);
+        }
+
+        function showPage(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            const targetPage = document.getElementById(pageId + '-page');
+            if (targetPage) {
+                setTimeout(() => {
+                    targetPage.classList.add('active');
+                }, 100);
+            }
+            
+            closeMenu();
+        }
+
+        function toggleMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.toggle('active');
+        }
+
+        function closeMenu() {
+            const navLinks = document.getElementById('navLinks');
+            navLinks.classList.remove('active');
+        }
+    </script>
+</body>
+</html>
